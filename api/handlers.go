@@ -14,10 +14,8 @@ import (
 
 const DateLayout = scheduler.DateLayout
 
-// DB – глобальное подключение к базе данных, которое устанавливается из main.
 var DB *sql.DB
 
-// respondWithJSON отправляет JSON-ответ.
 func respondWithJSON(w http.ResponseWriter, code int, payload interface{}) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	w.WriteHeader(code)
@@ -53,9 +51,6 @@ func NextDateHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(next))
 }
 
-// TaskHandler обрабатывает запросы по маршруту /api/task.
-// Поддерживает GET (получение задачи по id), POST (добавление задачи),
-// PUT (редактирование задачи) и DELETE (удаление задачи).
 func TaskHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
@@ -71,7 +66,6 @@ func TaskHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// getTask возвращает параметры задачи по id.
 func getTask(w http.ResponseWriter, r *http.Request) {
 	id := r.URL.Query().Get("id")
 	if id == "" {
@@ -88,7 +82,6 @@ func getTask(w http.ResponseWriter, r *http.Request) {
 	respondWithJSON(w, http.StatusOK, task)
 }
 
-// addTask добавляет новую задачу.
 func addTask(w http.ResponseWriter, r *http.Request) {
 	var task models.Task
 	if err := json.NewDecoder(r.Body).Decode(&task); err != nil {
@@ -101,7 +94,6 @@ func addTask(w http.ResponseWriter, r *http.Request) {
 	}
 
 	today := time.Now().Format(DateLayout)
-	// Если поле date пустое или равно "today" (регистр не важен) – используем сегодняшнюю дату.
 	if strings.TrimSpace(task.Date) == "" || strings.ToLower(task.Date) == "today" {
 		task.Date = today
 	} else {
