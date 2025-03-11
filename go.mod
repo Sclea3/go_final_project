@@ -1,6 +1,6 @@
 module github.com/Sclea3/go_final_project
 
-go 1.22.2
+go 1.23
 
 require (
 	github.com/jmoiron/sqlx v1.4.0
