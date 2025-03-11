@@ -3,11 +3,11 @@ FROM golang:1.18
 WORKDIR /app
 COPY . .
 
+RUN go mod tidy
 RUN go mod download
-RUN go build -o app .
 
-RUN chmod +x run-tests.sh
+RUN go build -o app .
 
 EXPOSE 7540
 
-CMD ["./run-tests.sh"]
+CMD sh -c "./app & sleep 5 && go test -v ./tests"
