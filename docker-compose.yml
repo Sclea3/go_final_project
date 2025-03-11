@@ -5,4 +5,4 @@ services:
     ports:
       - "7540:7540"
     environment:
-      - TODO_DBFILE=scheduler.db
+      - TODO_DBFILE=/app/scheduler.db
